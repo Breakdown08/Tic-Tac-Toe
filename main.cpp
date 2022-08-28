@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <random>
 #include <stdlib.h>
 #include <chrono>
@@ -202,7 +202,7 @@ TProgress getWon(const TGame& g)
 		int equalCount = 1;
 		for (size_t y = 1; y < g.SIZE; y++)
 		{
-			if (g.ppField[y - 1][x] == g.ppField[y][x])
+			if (g.ppField[y - 1][x] == g.ppField[y][x] && g.ppField[y][x] != EMPTY)
 			{
 				equalCount++;
 			}
@@ -302,6 +302,7 @@ TCoord getAICoord(TGame& g)
 	//Pre win situation
 	for (size_t y = 0; y < g.SIZE; y++)
 	{
+		//cout << "check pre win" << endl;
 		for (size_t x = 0; x < g.SIZE; x++)
 		{
 			if (g.ppField[y][x] == EMPTY)
@@ -319,6 +320,7 @@ TCoord getAICoord(TGame& g)
 	//Pre fail situation
 	for (size_t y = 0; y < g.SIZE; y++)
 	{
+		//cout << "check pre fail" << endl;
 		for (size_t x = 0; x < g.SIZE; x++)
 		{
 			if (g.ppField[y][x] == EMPTY)
@@ -336,37 +338,45 @@ TCoord getAICoord(TGame& g)
 	//Ход по приоритетам + rand
 	if (g.ppField[1][1] == EMPTY)
 	{
+		//cout << "check center" << endl;
 		return { 1, 1 };
 	}
 	
 	//углы
 	TCoord angleBuffer[4];
 	size_t num{ 0U };
+	cout << "check angles" << endl;
 	if (g.ppField[0][0] == EMPTY)
 	{
 		angleBuffer[num] = { 0, 0 };
 		num++;
 	}
-	if (g.ppField[2][0] == EMPTY)
+	if (g.ppField[g.SIZE - 1][0] == EMPTY)
 	{
 		angleBuffer[num] = { g.SIZE - 1, 0 };
 		num++;
 	}
-	if (g.ppField[0][2] == EMPTY)
+	if (g.ppField[0][g.SIZE - 1] == EMPTY)
 	{
 		angleBuffer[num] = { 0, g.SIZE - 1 };
 		num++;
 	}
-	if (g.ppField[2][2] == EMPTY)
+	if (g.ppField[g.SIZE - 1][g.SIZE - 1] == EMPTY)
 	{
 		angleBuffer[num] = { g.SIZE - 1, g.SIZE - 1 };
 		num++;
 	}
+	cout << num << endl;
 	if (num > 0)
 	{
 		const size_t index = getRandomNum(0, 1000) % num;
+		//cout << index << endl;
+		//cout << "end check angles" << endl;
 		return angleBuffer[index];
 	}
+	//cout << "end check angles" << endl;
+	
+	
 
 	//не углы
 	TCoord* notAngleBuffer{ nullptr };
@@ -374,6 +384,7 @@ TCoord getAICoord(TGame& g)
 
 	for (size_t y = 0; y < g.SIZE; y++) //обход на поиск и подсчет неугловых клеток
 	{
+		cout << "check NOT angles" << endl;
 		for (size_t x = 0; x < g.SIZE; x++)
 		{
 			if ((y != 0 || x != 0) && (y != g.SIZE - 1 || x != g.SIZE - 1) && (y != 0 || x != g.SIZE - 1) && (y != g.SIZE - 1 || x != 0)) //если не угол
@@ -387,11 +398,15 @@ TCoord getAICoord(TGame& g)
 			}
 		}
 	}
+	cout << bufferSize << endl;
 	if (bufferSize > 0)
 	{
 		const size_t index = getRandomNum(0, 1000) % bufferSize;
+		//cout << index << endl;
+		//cout << "end check NOT angles" << endl;
 		return notAngleBuffer[index];
 	}
+	//cout << "end check NOT angles" << endl;
 	return { 0, 0 };
 }
 
