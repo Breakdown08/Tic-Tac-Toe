@@ -180,7 +180,6 @@ TProgress getWon(const TGame& g)
 			if (g.ppField[y][x - 1] == g.ppField[y][x] && g.ppField[y][x] != EMPTY)
 			{
 				equalCount++;
-				//cout << x - 1 << ":" << y << " = " << x << ":" << y << " count = " << equalCount << endl;
 			}
 			else 
 			{
@@ -302,7 +301,6 @@ TCoord getAICoord(TGame& g)
 	//Pre win situation
 	for (size_t y = 0; y < g.SIZE; y++)
 	{
-		//cout << "check pre win" << endl;
 		for (size_t x = 0; x < g.SIZE; x++)
 		{
 			if (g.ppField[y][x] == EMPTY)
@@ -320,7 +318,6 @@ TCoord getAICoord(TGame& g)
 	//Pre fail situation
 	for (size_t y = 0; y < g.SIZE; y++)
 	{
-		//cout << "check pre fail" << endl;
 		for (size_t x = 0; x < g.SIZE; x++)
 		{
 			if (g.ppField[y][x] == EMPTY)
@@ -338,7 +335,6 @@ TCoord getAICoord(TGame& g)
 	//Ход по приоритетам + rand
 	if (g.ppField[1][1] == EMPTY)
 	{
-		//cout << "check center" << endl;
 		return { 1, 1 };
 	}
 	
@@ -370,11 +366,8 @@ TCoord getAICoord(TGame& g)
 	if (num > 0)
 	{
 		const size_t index = getRandomNum(0, 1000) % num;
-		//cout << index << endl;
-		//cout << "end check angles" << endl;
 		return angleBuffer[index];
 	}
-	//cout << "end check angles" << endl;
 	
 	
 
@@ -402,11 +395,8 @@ TCoord getAICoord(TGame& g)
 	if (bufferSize > 0)
 	{
 		const size_t index = getRandomNum(0, 1000) % bufferSize;
-		//cout << index << endl;
-		//cout << "end check NOT angles" << endl;
 		return notAngleBuffer[index];
 	}
-	//cout << "end check NOT angles" << endl;
 	return { 0, 0 };
 }
 
